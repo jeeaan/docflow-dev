@@ -4,7 +4,7 @@
 
 Baixe o projeto `thoth-api` para a raiz do seu diretório de trabalho. A estrutura do seu projeto deve ser semelhante a esta:
 
-/<docflow-dev>
+<docflow-dev>
 ├── thoth-api
 └── docker-compose.yml
 
