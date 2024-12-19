@@ -2,8 +2,8 @@ version: '3'
 
 services:
     java7-maven:
-        image: jftec/docflow4_java7-maven:v0.0.1
-        container_name: java7-maven-container
+        image: jftec/docflow4_java7-maven:v0.0.2
+        container_name: java7-dev
         volumes:
             - ./thoth-api/docflow4-web:/usr/src/app
             - ./thoth-api/docflow4-web/src/main/resources/config/config-files:/usr/src/app/config-files/docflow
@@ -18,10 +18,11 @@ services:
         command: >
             /bin/sh -c "
                 echo '⚙️  Executando mvn -U eclipse:clean eclipse:eclipse clean install' && \
-                mvn -U eclipse:clean eclipse:eclipse clean install -DskipTests -Dpmd.skip -Dcpd.skip -Dfindbugs.skip -Dcheckstyle.skip -Djacoco.skip -Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=/root/.m2/repository && \
+                mvn -U eclipse:clean eclipse:eclipse install -DskipTests -Dpmd.skip -Dcpd.skip -Dfindbugs.skip -Dcheckstyle.skip -Djacoco.skip -Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=/root/.m2/repository && \
                 echo '⚙️  Executando mvn dependency:copy-dependencies' && \
                 mvn dependency:copy-dependencies && \
                 echo '🚀 Iniciando o Jetty' && \
+                sleep 4 && \
                 java -Ddataeasy.config.path='/usr/src/app/config-files' \
                      -Ddocflow.config.server.master='true' \
                      -Ddocflow.config.auditoria.pathToSQLite='/usr/src/app/config-files/docflow/auditoria.sqlite' \
@@ -30,12 +31,12 @@ services:
                      br.com.dataeasy.docflow4.web.JettyInitializer
             "
         environment:
-            - DATASOURCE_URL=jdbc:postgresql://docflow4-postgres:5432/docflow
+            - DATASOURCE_URL=jdbc:postgresql://docflow4-postgres-dev:5432/docflow
             - DATASOURCE_USERNAME=postgres
             - DATASOURCE_PASSWORD=postgres
     postgres:
         image: postgres:9.6
-        container_name: docflow4-postgres
+        container_name: docflow4-postgres-dev
         environment:
             - POSTGRES_DB=docflow
             - POSTGRES_USER=postgres
