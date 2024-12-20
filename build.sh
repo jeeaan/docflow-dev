@@ -2,23 +2,26 @@
 
 # Limpando docker
 echo "🗑️ Removendo containers e imagens..."
-sudo docker stop $(sudo docker ps -aq) && \
-sudo docker rm $(sudo docker ps -aq) && \
-sudo docker rmi $(sudo docker images -q) -f && \
-sudo docker volume rm $(sudo docker volume ls -q) && \
-sudo docker network rm $(sudo docker network ls -q)
+# Parar e remover containers com 'docflow' no nome
+sudo docker ps -a --filter "name=docflow" -q | xargs -r sudo docker stop
+sudo docker ps -a --filter "name=docflow" -q | xargs -r sudo docker rm
+# Remover imagens que contenham 'docflow' no nome
+sudo docker images --filter "reference=*docflow*" -q | xargs -r sudo docker rmi -f
+# Remover volumes associados ao 'docflow'
+sudo docker volume ls --filter "name=docflow" -q | xargs -r sudo docker volume rm
+# Remover redes associadas ao 'docflow'
+sudo docker network ls --filter "name=docflow" -q | xargs -r sudo docker network rm
 
 # Apagar os diretórios especificados
 echo "🗑️ Removendo os diretórios especificados..."
-rm -rf thoth-api/docflow4-web/target/dependency thoth-api/docflow4-web/target/docflow thoth-api/docflow4-web/target/docflow/WEB-INF
 
-# Verificar se os diretórios foram removidos
-if [ $? -eq 0 ]; then
-  echo "✅ Diretórios removidos com sucesso!"
-else
-  echo "❌ Falha ao remover os diretórios."
-  exit 1
-fi
+sudo rm -rf postgres_data
+DIR="thoth-api"
+# Entrar no diretório
+cd "$DIR" || exit
+# Encontrar e deletar o diretório 'target' em todas as subpastas
+find . -type d -name 'target' -exec rm -rf {} + 
+cd ..
 
 # Construir e rodar os containers Docker
 echo "🐋 Iniciando build e containers com Docker Compose..."

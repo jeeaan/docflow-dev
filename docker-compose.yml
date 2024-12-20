@@ -3,7 +3,7 @@ version: '3'
 services:
     java7-maven:
         image: jftec/docflow4_java7-maven:v0.0.4
-        container_name: java7-dev
+        container_name: docflow-java7-dev
         volumes:
             - ./thoth-api/docflow4-web:/usr/src/app
             - ./thoth-api/docflow4-web/src/main/resources/config/config-files:/usr/src/app/config-files/docflow
@@ -24,11 +24,11 @@ services:
                 echo '🔍 Listando o conteúdo do diretório /usr/src/app/target/dependency' && \
                 ls -la /usr/src/app/target/dependency && \
                 echo '🚀 Iniciando o Jetty' && \
-                java -Ddataeasy.config.path='/usr/src/app/config-files' \
-                     -Ddocflow.config.server.master='true' \
-                     -Ddocflow.config.auditoria.pathToSQLite='/usr/src/app/config-files/docflow/auditoria.sqlite' \
+                java -Ddataeasy.config.path=/usr/src/app/config-files \
+                     -Ddocflow.config.server.master=true \
+                     -Ddocflow.config.auditoria.pathToSQLite=/usr/src/app/config-files/docflow/auditoria.sqlite \
                      -Xms512m -Xmx1g -XX:MaxPermSize=256m \
-                     -cp '/usr/src/app/target/test-classes:/usr/src/app/target/classes:/usr/src/app/target/dependency/*' \
+                     -cp /usr/src/app/target/test-classes:/usr/src/app/target/classes:/usr/src/app/target/dependency/* \
                      br.com.dataeasy.docflow4.web.JettyInitializer
             "
         environment:
