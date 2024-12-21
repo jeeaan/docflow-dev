@@ -27,3 +27,11 @@ O Docker irá baixar as imagens necessárias, configurar os containers e baixar 
 Após o Docker ter baixado todas as dependências e iniciado os containers, acesse a aplicação no seu navegador em:
 
 http://localhost:8080/docflow
+
+
+Roda:
+docker-compose version 1.29.2, build unknown
+docker-compose version 1.29.2, build 5becea4c
+
+Não roda:
+Docker Compose version v2.29.6
