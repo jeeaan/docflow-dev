@@ -30,8 +30,8 @@ http://localhost:8080/docflow
 
 
 Roda:
-docker-compose version 1.29.2, build unknown
-docker-compose version 1.29.2, build 5becea4c
+- docker-compose version 1.29.2, build unknown
+- docker-compose version 1.29.2, build 5becea4c
 
 Não roda:
-Docker Compose version v2.29.6
+- Docker Compose version v2.29.6
